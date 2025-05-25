@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MultiplicaManía</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .game-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .question {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #444;
+    }
+    input {
+      font-size: 1.5em;
+      padding: 10px;
+      width: 100px;
+      text-align: center;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .score, .timer, .feedback {
+      margin-top: 15px;
+      font-size: 1.2em;
+    }
+    .feedback {
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<iframe allow="fullscreen; autoplay;" allowfullscreen width="795" height="690" frameborder="0" src="https://es.educaplay.com/juego/23991108-condicional_tipo_0.html"></iframe>  
+<div class="game-container">
+    <h1>MultiplicaManía 🧠✖️</h1>
+    <div class="question" id="question">¿Cuánto es 3 × 4?</div>
+    <input type="number" id="answerInput" />
+    <br />
+    <button onclick="checkAnswer()">Responder</button>
+    <div class="feedback" id="feedback"></div>
+    <div class="score">Puntuación: <span id="score">0</span></div>
+    <div class="timer">Tiempo: <span id="time">60</span> segundos</div>
+    <button onclick="restartGame()">🔄 Reiniciar</button>
+  </div>
+
+  <script>
+    let num1, num2;
+    let score = 0;
+    let timeLeft = 60;
+    let timer;
+
+    function newQuestion() {
+      num1 = Math.floor(Math.random() * 10) + 1;
+      num2 = Math.floor(Math.random() * 10) + 1;
+      document.getElementById("question").textContent = `¿Cuánto es ${num1} × ${num2}?`;
+      document.getElementById("answerInput").value = "";
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function checkAnswer() {
+      const answer = parseInt(document.getElementById("answerInput").value);
+      const feedback = document.getElementById("feedback");
+      if (answer === num1 * num2) {
+        score++;
+        feedback.textContent = "✅ ¡Correcto!";
+        feedback.className = "feedback correct";
+      } else {
+        feedback.textContent = "❌ Incorrecto";
+        feedback.className = "feedback wrong";
+      }
+      document.getElementById("score").textContent = score;
+      newQuestion();
+    }
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("time").textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          document.getElementById("question").textContent = "⏰ ¡Tiempo terminado!";
+          document.getElementById("feedback").textContent = `Tu puntaje final es ${score}.`;
+        }
+      }, 1000);
+    }
+
+    function restartGame() {
+      score = 0;
+      timeLeft = 60;
+      document.getElementById("score").textContent = score;
+      document.getElementById("time").textContent = timeLeft;
+      newQuestion();
+      clearInterval(timer);
+      startTimer();
+    }
+
+    // Comenzar el juego
+    restartGame();
+  </script>
+</body>
+</html>
